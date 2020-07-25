@@ -5,31 +5,25 @@ router.put('/workouts/:id', (req, res) => {
   //add
 });
 
-router.post('/workouts/', (req, res) => {
-  //add
+router.post('/workouts', (req, res) => {
+  db.Workout.create(req.body)
+    .then((workout) => {
+      console.log(workout, 'workout is posted');
+      res.json(workout);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
 });
-
 router.get('/workouts/', (req, res) => {
-  db.Workout.find({}, (err, workouts) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(workouts);
-      res.json(workouts);
-    }
-  });
-});
-
-router.get('/workouts/range', async (req, res) => {
-  try {
-    const data = await Workout.find({}).limit(7);
-
-    console.log(data);
-    res.json(data);
-  } catch (error) {
-    console.log(error);
-    res.send(error);
-  }
+  db.Workout.find({}, {}, { sort: { day: -1 } })
+    .then((workout) => {
+      console.log(workout);
+      res.json(workout);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
