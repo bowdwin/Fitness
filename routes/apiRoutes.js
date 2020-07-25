@@ -1,11 +1,17 @@
 const router = require('express').Router();
-const Workout = require('../models/workout');
+const db = require('../models/');
 
-app.post('/api/workouts', (req, res) => {
-  db.Workout.create({
-    //do nothing
-  }).then((newWorkout) => {
-    res.json(newWorkout);
+router.put('/workouts/:id', (req, res) => {});
+
+router.post('/workouts/', (req, res) => {});
+
+router.get('/workouts/', (req, res) => {
+  db.Workout.find({}, (err, workouts) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(workouts);
+    }
   });
 });
 
