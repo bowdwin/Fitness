@@ -1,5 +1,7 @@
 # Fitness Tracker
 
+https://track-that-fitness.herokuapp.com/
+
 Track your Fitness!
 
 # Table Of Contents:
@@ -14,10 +16,6 @@ Track your Fitness!
 ## GIF shot Fitness Tracker!
 
 ![](./public/images/FitnessGif.gif)
-
-# Table Of Contents:
-
-https://track-that-fitness.herokuapp.com/
 
 # Description:
 
