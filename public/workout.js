@@ -10,7 +10,7 @@ async function initWorkout() {
       if (lastWorkout.exercises[i].duration !== 0) {
         duration += lastWorkout.exercises[i].duration;
       }
-      // console.log("duration: " + duration);
+      console.log('duration: ', duration);
     }
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
