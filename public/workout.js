@@ -1,31 +1,37 @@
 async function initWorkout() {
   const lastWorkout = await API.getLastWorkout();
-  console.log("Last workout:", lastWorkout);
+  console.log('Last workout:', lastWorkout);
   if (lastWorkout) {
     document
       .querySelector("a[href='/exercise?']")
-      .setAttribute("href", `/exercise?id=${lastWorkout._id}`);
-
+      .setAttribute('href', `/exercise?id=${lastWorkout._id}`);
+    let duration = 0;
+    for (let i = 0; i < lastWorkout.exercises.length; i++) {
+      if (lastWorkout.exercises[i].duration !== 0) {
+        duration += lastWorkout.exercises[i].duration;
+      }
+      // console.log("duration: " + duration);
+    }
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
-      totalDuration: lastWorkout.totalDuration,
+      totalDuration: duration,
       numExercises: lastWorkout.exercises.length,
-      ...tallyExercises(lastWorkout.exercises)
+      ...tallyExercises(lastWorkout.exercises),
     };
 
     renderWorkoutSummary(workoutSummary);
   } else {
-    renderNoWorkoutText()
+    renderNoWorkoutText();
   }
 }
 
 function tallyExercises(exercises) {
   const tallied = exercises.reduce((acc, curr) => {
-    if (curr.type === "resistance") {
+    if (curr.type === 'resistance') {
       acc.totalWeight = (acc.totalWeight || 0) + curr.weight;
       acc.totalSets = (acc.totalSets || 0) + curr.sets;
       acc.totalReps = (acc.totalReps || 0) + curr.reps;
-    } else if (curr.type === "cardio") {
+    } else if (curr.type === 'cardio') {
       acc.totalDistance = (acc.totalDistance || 0) + curr.distance;
     }
     return acc;
@@ -35,31 +41,33 @@ function tallyExercises(exercises) {
 
 function formatDate(date) {
   const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   };
 
   return new Date(date).toLocaleDateString(options);
 }
 
 function renderWorkoutSummary(summary) {
-  const container = document.querySelector(".workout-stats");
-
+  const container = document.querySelector('.workout-stats');
+  console.log(container);
+  // console.log(workoutKeyMap);
+  console.log(summary);
   const workoutKeyMap = {
-    date: "Date",
-    totalDuration: "Total Workout Duration",
-    numExercises: "Exercises Performed",
-    totalWeight: "Total Weight Lifted",
-    totalSets: "Total Sets Performed",
-    totalReps: "Total Reps Performed",
-    totalDistance: "Total Distance Covered"
+    date: 'Date',
+    totalDuration: 'Total Workout Duration',
+    numExercises: 'Exercises Performed',
+    totalWeight: 'Total Weight Lifted',
+    totalSets: 'Total Sets Performed',
+    totalReps: 'Total Reps Performed',
+    totalDistance: 'Total Distance Covered',
   };
-
-  Object.keys(summary).forEach(key => {
-    const p = document.createElement("p");
-    const strong = document.createElement("strong");
+  console.log(workoutKeyMap);
+  Object.keys(summary).forEach((key) => {
+    const p = document.createElement('p');
+    const strong = document.createElement('strong');
 
     strong.textContent = workoutKeyMap[key];
     const textNode = document.createTextNode(`: ${summary[key]}`);
@@ -72,10 +80,10 @@ function renderWorkoutSummary(summary) {
 }
 
 function renderNoWorkoutText() {
-  const container = document.querySelector(".workout-stats");
-  const p = document.createElement("p");
-  const strong = document.createElement("strong");
-  strong.textContent = "You have not created a workout yet!"
+  const container = document.querySelector('.workout-stats');
+  const p = document.createElement('p');
+  const strong = document.createElement('strong');
+  strong.textContent = 'You have not created a workout yet!';
 
   p.appendChild(strong);
   container.appendChild(p);
